@@ -21,7 +21,7 @@ namespace Brief_Duel_Guerriers.classe
             PointsDeVie = pointsDeVie;
             NbDesAttaques = nbDesAttaques;
         }
-        // méthodes
+        // méthodes publiques
 
         public string GetNom() {
             return Nom;
@@ -35,5 +35,8 @@ namespace Brief_Duel_Guerriers.classe
             return NbDesAttaques;
         }
 
+        // Méthodes Essentielles : pour Ajouter les actions que le guerrier peut effectuer.
+
+       
     }
 }
