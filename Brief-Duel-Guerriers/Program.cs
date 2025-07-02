@@ -1,4 +1,6 @@
-﻿namespace Brief_Duel_Guerriers
+﻿using Brief_Duel_Guerriers.classe;
+
+namespace Brief_Duel_Guerriers
 {
     internal class Program
     {
