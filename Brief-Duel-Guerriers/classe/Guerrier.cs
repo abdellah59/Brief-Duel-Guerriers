@@ -35,8 +35,23 @@ namespace Brief_Duel_Guerriers.classe
             return NbDesAttaques;
         }
 
-        // Méthodes Essentielles : pour Ajouter les actions que le guerrier peut effectuer.
+        //  Méthodes Essentielles
+        public void AfficherInfos()
+        {
+            Console.WriteLine($"Le guerrier s'appelle {Nom} et à {PointsDeVie} PV ");
+        }
+        // création du random pour les attaques
 
-       
+        public Random random = new Random();
+
+        public int Attaquer()
+        {
+        return NbDesAttaques = random.Next(1, 6 + 1);
+        }
+        public void SubirDegats(int degats)
+        {
+            PointsDeVie -= degats;
+            Console.WriteLine($"Le nombre de dégats est {degats}, il reste maintenant {PointsDeVie} PV");
+        }
     }
-}
+};
