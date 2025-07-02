@@ -21,7 +21,7 @@ namespace Brief_Duel_Guerriers.classe
             PointsDeVie = pointsDeVie;
             NbDesAttaques = nbDesAttaques;
         }
-        // méthodes
+        // méthodes publiques
 
         public string GetNom() {
             return Nom;
