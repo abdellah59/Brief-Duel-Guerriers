@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,27 @@ namespace Brief_Duel_Guerriers.classe
 
         }
 
-        
+        // Methode publique : Getter pour l'armure lourde
+        public bool GetArmureLourde()
+        {
+            return ArmureLourde;
+        }
+
+        // Méthode spécifique  : Redéfinition de la méthode SubirDegats avec l'attribut Armure Lourde  
+
+        public override void SubirDegats(int degats)
+        {
+
+            if (ArmureLourde) // Conditon qui determine si armure lourde alros les dégats sont divisé par 2
+            {
+                degats = degats / 2;
+                Console.WriteLine($"{GetNom()} porte une armure lourde : Dégats sont réduit à {degats}");
+            }
+           
+            // Appel de la methode de la classe mère
+            base.SubirDegats(degats);  
+
+        }
+
     }
 }
