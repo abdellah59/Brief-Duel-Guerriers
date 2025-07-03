@@ -44,13 +44,15 @@ namespace Brief_Duel_Guerriers.classe
         {
             // création du random pour les attaques
             Random random = new Random();
-            int totalDesDegats = 0;
 
+            int totalDesDegats = 0;
+            
             for (int i = 0; i < NbDesAttaques; i++) // lancement d'une boucle qui permet de recuperer le total
             {
-              totalDesDegats +=  random.Next(1, 7); // addition de la somme des lancer de dés entre 1 et 6
+                totalDesDegats += random.Next(1, 7); // addition de la somme des lancer de dés entre 1 et 6
 
             }
+
             Console.WriteLine($"le total des dégats est {totalDesDegats} ");
             return totalDesDegats;
         }
