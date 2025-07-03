@@ -53,17 +53,9 @@ namespace Brief_Duel_Guerriers.classe
             }
             Console.WriteLine($"le total des dégats est {totalDesDegats} ");
             return totalDesDegats;
-
-
-
         }
         public virtual void SubirDegats(int degats)
         {
-
-            PointsDeVie -= degats;Console.WriteLine($"Le nombre de dégats est de {degats}, il reste maintenant {PointsDeVie} PV ");
-
-           ;Console.WriteLine($"Le nombre de dégats est de {degats}, il reste maintenant {PointsDeVie} PV ");
-
             PointsDeVie -= degats;
             if (PointsDeVie < 0) // si les points de vie sont inferieur à 0, cela ramène les pv a 0
             {
