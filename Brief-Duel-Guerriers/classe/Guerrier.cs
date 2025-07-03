@@ -40,16 +40,32 @@ namespace Brief_Duel_Guerriers.classe
         {
             Console.WriteLine($"Le guerrier s'appelle {Nom} et à {PointsDeVie} PV et le nombre d'attaque est de {NbDesAttaques} ");
         }
-      
+        public virtual int Attaquer()
         {
-            int attaqueEnMoins = random.Next(1, 7);
-            NbDesAttaques -= attaqueEnMoins;
-            return attaqueEnMoins;
-           
+            // création du random pour les attaques
+
+            Random random = new Random();
+
+            int totalDesDegats = 0;
+            for (int i = 0; i < NbDesAttaques; i++) // lancement d'une boucle qui permet de recuperer le total
+            {
+                totalDesDegats += random.Next(1, 7); // addition de la somme des lancer de dés entre 1 et 6
+            }
+            Console.WriteLine($"le total des dégats est {totalDesDegats} ");
+            return totalDesDegats;
+
         }
-        public void SubirDegats(int degats)
+        public virtual void SubirDegats(int degats)
         {
+
             PointsDeVie -= degats;
+
+
+            if (PointsDeVie < 0) // si les points de vie sont inferieur à 0, cela ramène les pv a 0
+            {
+                PointsDeVie = 0;
+
+            }
             Console.WriteLine($"Le nombre de dégats est de {degats}, il reste maintenant {PointsDeVie} PV ");
         }
     }
