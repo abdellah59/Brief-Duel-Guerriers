@@ -45,12 +45,11 @@ namespace Brief_Duel_Guerriers.classe
             // création du random pour les attaques
 
 
-
         }
         public virtual void SubirDegats(int degats)
         {
 
-            PointsDeVie -= degats;Console.WriteLine($"Le nombre de dégats est de {degats}, il reste maintenant {PointsDeVie} PV ");
+         
         }
     }
 };
