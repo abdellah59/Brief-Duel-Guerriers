@@ -40,11 +40,7 @@ namespace Brief_Duel_Guerriers.classe
         {
             Console.WriteLine($"Le guerrier s'appelle {Nom} et à {PointsDeVie} PV et le nombre d'attaque est de {NbDesAttaques} ");
         }
-        // création du random pour les attaques
-
-        public Random random = new Random();
-
-        public int Attaquer()
+      
         {
             int attaqueEnMoins = random.Next(1, 7);
             NbDesAttaques -= attaqueEnMoins;

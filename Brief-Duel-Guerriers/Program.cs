@@ -6,7 +6,7 @@ namespace Brief_Duel_Guerriers
     {
         static void Main(string[] args)
         {
-            Guerrier Nico = new Guerrier("Nicolas", 15, 67);
+          
             Guerrier Nicolas = new Guerrier("Nico", 15, 18);
 
             Nico.AfficherInfos();
