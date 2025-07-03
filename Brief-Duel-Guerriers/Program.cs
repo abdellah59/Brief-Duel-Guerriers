@@ -8,6 +8,16 @@ namespace Brief_Duel_Guerriers
         {
             Guerrier Nico = new Guerrier("Nicolas", 5, 3);
             Guerrier Nicolas = new Guerrier("Nico", 15, 18);
+            Sorciere soso = new Sorciere("soso", 2, 1);
+
+          
+            soso.AfficherInfos();
+            soso.Attaquer();
+            soso.SubirDegats(1);
+            soso.AfficherInfos();
+           
+            Console.WriteLine();
+
 
             Nico.AfficherInfos();
             Nico.Attaquer();
