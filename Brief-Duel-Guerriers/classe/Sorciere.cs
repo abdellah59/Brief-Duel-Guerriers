@@ -12,8 +12,6 @@ namespace Brief_Duel_Guerriers.classe
         {
 
         }
-
-        /*public Random random = new Random();
         public override int Attaquer()
         {
             int attaqueEnMoins = random.Next(1, 10);
