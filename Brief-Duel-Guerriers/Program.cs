@@ -58,7 +58,56 @@ namespace Brief_Duel_Guerriers
             }
 
         }
+        // création d'une liste pour stocker les nouveaux guerrier 
+        static List<Guerrier> NouveauGuerrier = new List<Guerrier>();
+
+        // méthode pour ajouter un ajouter un guerrier 
+        public static void AjouterGuerrier()
+        {
+            Console.WriteLine($"Saissisez le nom du nouveau guerrier");
+            string nom = Console.ReadLine(); // demande le nom
+
+
+            Console.WriteLine($"Saissisez les points de vie du nouveau guerrier");
+            int pointsDeVie = 0;
+
+            int.TryParse(Console.ReadLine(), out pointsDeVie); // demande les pv
+            if (pointsDeVie <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
+            {
+                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
+                Console.WriteLine("resaissisez un chiffre positif");
+                int.TryParse(Console.ReadLine(), out pointsDeVie);
+            }
+
+
+            Console.WriteLine($"Saissisez le nombre d'attaque du nouveau guerrier");
+            int nbDesAttaques;
+
+            int.TryParse(Console.ReadLine(), out nbDesAttaques); // demande le nombre d'attaque 
+            if (nbDesAttaques <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
+            {
+                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
+                Console.WriteLine("resaissisez un chiffre positif");
+                int.TryParse(Console.ReadLine(), out nbDesAttaques);
+            }
+            Guerrier liste = new Guerrier(nom, pointsDeVie, nbDesAttaques);
+            NouveauGuerrier.Add(liste);
+
+            Console.WriteLine($"Vous avez crée un nouveau guerrier qui s'appelle {nom} qui à {pointsDeVie} PV et {nbDesAttaques} attaques");
+
+        }
+
+        // Méthode pour afficher la liste des guerrier
+
+        public static void AfficherListeGuerriers()
+        {
+            /*List<Guerrier> NouveauGuerrier = new List<Guerrier>();*/
+            foreach (Guerrier liste in NouveauGuerrier) // boucle pour parcourir la liste
+            {
+                liste.AfficherInfos();
+            }
+
+        }
 
     }
-    
 }
