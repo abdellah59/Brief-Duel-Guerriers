@@ -6,26 +6,45 @@ namespace Brief_Duel_Guerriers
     {
         static void Main(string[] args)
         {
-            Guerrier Nico = new Guerrier("Nicolas", 5, 3);
-            Guerrier Nicolas = new Guerrier("Nico", 15, 18);
-            Sorciere soso = new Sorciere("soso", 2, 1);
+            // Création des guerriers Gobelin et sorciere avec leur attribus et affichage de leur info au debut 
+            Gobelin Nico = new Gobelin("Nicolas", 40, 2, true);
+            Sorciere soso = new Sorciere("soso", 25, 5);
 
-          
+            Console.WriteLine("Gbelin vs Sorciere :");
+            Nico.AfficherInfos();
             soso.AfficherInfos();
-            soso.Attaquer();
-            soso.SubirDegats(1);
-            soso.AfficherInfos();
-           
             Console.WriteLine();
 
+            // Boucle du duel: tant que les deux personnages ont des points de vie continuer le duel
 
-            Nico.AfficherInfos();
-            Nico.Attaquer();
-            Nico.Attaquer();
-            Nico.Attaquer();
-            Nico.SubirDegats(10);
-            Nico.AfficherInfos();
-            Nicolas.AfficherInfos();
+            while (Nico.GetPointsDeVie() > 0 && soso.GetPointsDeVie() > 0)
+            {
+                // Le gobelin attaque, et on récupère les dégâts infligés à la sorciere
+                int degatsGobelin = Nico.Attaquer();
+                soso.SubirDegats(degatsGobelin);
+                soso.AfficherInfos();
+
+                // Condition pour verifier si la sorcière est vaincue on arrete la boucle
+                if (soso.GetPointsDeVie() <= 0)
+                {
+                    Console.WriteLine($"{soso.GetNom()} est vaincu");
+                    break;
+                }
+
+                // La sorciere attaque a son tour, et on récupère les dégâts infligés au goblin
+                int degatsSorciere = soso.Attaquer();
+                Nico.SubirDegats(degatsSorciere);
+                Nico.AfficherInfos();
+
+                // Condition pour verifier si le gobelin n'a plus de pv alors il est vaincu et fin de la boucle
+                if (Nico.GetPointsDeVie() <= 0)
+                {
+                    Console.WriteLine($"{Nico.GetNom()} est vaincu");
+                    break;
+                }
+            }
+
+
         }
     }
 };
