@@ -34,7 +34,7 @@ namespace Brief_Duel_Guerriers.classe
         public override void SubirDegats(int degats)
         {
 
-            if (ArmureLourde) // Conditon qui determine si armure lourde alros les dégats sont divisé par 2
+            if (ArmureLourde) // Conditon qui determine si il y'a armure lourde alors les dégats sont divisé par 2
             {
                 degats = degats / 2;
                 Console.WriteLine($"{GetNom()} porte une armure lourde : Dégats sont réduit à {degats}");
