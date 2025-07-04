@@ -18,6 +18,8 @@ namespace Brief_Duel_Guerriers.classe
             // création du random pour les attaques
             Random random = new Random();
 
+            Console.Write($"{GetNom()} attaque avec {GetNbDesAttaque()} dés : "); // Affichage du nom du guerrier avec le nb de dés pour son attaque 
+
             int totalDesDegats = 0;
             int degatsMin = GetNbDesAttaque();
 
@@ -25,6 +27,8 @@ namespace Brief_Duel_Guerriers.classe
             {
                 totalDesDegats += random.Next(1, 7); // addition de la somme des lancer de dés entre 1 et 6
             }
+
+            // Condition car la Sorciere inflige toujours au minimum le nombre de dés d'attaque
             if (  degatsMin > totalDesDegats )
             {
                 degatsMin = totalDesDegats;
