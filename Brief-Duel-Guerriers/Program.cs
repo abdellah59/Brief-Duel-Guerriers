@@ -82,7 +82,7 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("║  7. Afficher le guide utlisateur       ║");
             Console.WriteLine("║  8. Quitter                            ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
-            Console.WriteLine($"Guerriers créés : {NouveauGuerrier.Count}");
+            Console.WriteLine($"Guerriers créés : {listeGuerriers.Count}");
             Console.WriteLine();
 
            
@@ -152,7 +152,7 @@ namespace Brief_Duel_Guerriers
         }
 
         // création d'une liste pour stocker les nouveaux guerrier 
-        static List<Guerrier> NouveauGuerrier = new List<Guerrier>();
+        private static List<Guerrier> listeGuerriers = new List<Guerrier>();
 
         // méthode pour ajouter un ajouter un guerrier 
         public static void AjouterGuerrier()
@@ -166,14 +166,63 @@ namespace Brief_Duel_Guerriers
             // demande de saisir le nom de guerrier ave la methode LireNomValide
             string nom = LireNomValide();
 
-            // demande avec la methode LiereEntierValide de saisir les PV du guerrier avec une condition : PV entre 10 et 100 et nbr d'attaque entre 1 et 10
+            // demande de saisie avec la methode LiereEntierValide de saisir les PV du guerrier avec une condition : PV entre 10 et 100 et nbr d'attaque entre 1 et 10
             int pointsDeVie = LireEntierValide("Saisissez les Points de vie entre", 10, 100);
             int nbDesAttaques = LireEntierValide("Saisissez le Nombre de dé d'attaque entre", 1, 10);
 
-            Guerrier liste = new Guerrier(nom, pointsDeVie, nbDesAttaques);
-            NouveauGuerrier.Add(liste);
+            // Choix du tupe de guerrier avec un switch 
 
-            Console.WriteLine($"Vous avez crée un nouveau guerrier qui s'appelle {nom} qui à {pointsDeVie} PV et {nbDesAttaques} attaques");
+            Console.WriteLine();
+            Console.WriteLine("TYPES DE GUERRIERS :");
+            Console.WriteLine("1. Guerrier classique");
+            Console.WriteLine("2  Gobelin:");
+            Console.WriteLine("3. Sorcière");
+            Console.WriteLine("4. Sorcier");
+            Console.WriteLine();
+
+
+            // Appelle la fonction LireChoixUtilisateur pour demander à l'utilisateur de choisir un type de guerrier entre 1 et 4)
+            int typeChoix = LireChoixUtilisateur("Choissez un Type de Guerrier", 1, 4);
+
+            Guerrier nouveauGuerrier = null; //  variable qui contient l'objet du guerrier qu'on va créer
+
+            switch (typeChoix) 
+            {
+                case 1: 
+                    nouveauGuerrier = new Guerrier(nom, pointsDeVie, nbDesAttaques);
+                    break;
+
+                // demande à l’utilisateur s’il souhaite équiper le Gobelin d'une armure lourde. Reponse covertie en true si la reponse commence par o
+                case 2:
+                    Console.WriteLine();
+                    Console.Write("Vous voulez équiper le gobelin avec une Armure Lourde ? (o/n): ");
+                    bool armureLourde = Console.ReadLine().ToLower().StartsWith("o");
+                    nouveauGuerrier = new Gobelin(nom, pointsDeVie, nbDesAttaques, armureLourde);
+                    break;
+
+                case 3:
+                    nouveauGuerrier = new Sorciere(nom, pointsDeVie, nbDesAttaques);
+                    break;
+
+                case 4:
+                    int mana = LireEntierValide("Mana", 10, 100); // demande de saisir une valeur de mana entre 10 et 100 avec la methode lireEntierValide
+                    nouveauGuerrier = new Sorcier(nom, pointsDeVie, nbDesAttaques, mana);
+                    break;
+
+            }
+
+            // Ajout du nouveau guerrier créer dans la liste globale
+            listeGuerriers.Add(nouveauGuerrier);
+
+            // Affichage d'un message confirmation et des info du guerrier créer
+            Console.WriteLine();
+            Console.WriteLine("Guerrié créé avec succès");
+            Console.Write("Nouveau Guerrier : ");
+            nouveauGuerrier.AfficherInfos();
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
 
         }
 
@@ -224,7 +273,7 @@ namespace Brief_Duel_Guerriers
 
         public static void AfficherListeGuerriers()
         {
-            foreach (Guerrier liste in NouveauGuerrier) // boucle pour parcourir la liste
+            foreach (Guerrier liste in listeGuerriers) // boucle pour parcourir la liste
             {
                 liste.AfficherInfos();
             }
