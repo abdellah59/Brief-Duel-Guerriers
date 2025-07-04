@@ -36,7 +36,7 @@ namespace Brief_Duel_Guerriers.classe
         }
 
         //  Méthodes Essentielles
-        public void AfficherInfos()
+        public virtual void AfficherInfos()
         {
             Console.WriteLine($"Le guerrier s'appelle {Nom} et à {PointsDeVie} PV et le nombre d'attaque est de {NbDesAttaques} ");
         }

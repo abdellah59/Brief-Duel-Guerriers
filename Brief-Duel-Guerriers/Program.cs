@@ -36,14 +36,15 @@ namespace Brief_Duel_Guerriers
                     case "1":
                         AjouterGuerrier();
                         break;
+                     
 
                     case "2":
                         AfficherListeGuerriers();
                         break;
-
+/*
                     case "3":
                         LancerTournoi();
-                        break;
+                        break;*/
 
                     case "4": return false; // retourne false si l’utilisateur choisit de quitter et donc fin à la boucle.
 
