@@ -26,11 +26,11 @@ namespace Brief_Duel_Guerriers
 
         static void AfficherGuideUtilisateur()
         {
-            Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                    DUELS DE GUERRIERS                          ║");
-            Console.WriteLine("║                          ------                                ║");
-            Console.WriteLine("║                    GUIDE UTILISATEUR                           ║");
-            Console.WriteLine("╚════════════════════════════════════════════════════════════════╝");
+            Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║                  DUEL  DE  GUERRIERS                          ║");
+            Console.WriteLine("║                       ------                                  ║");
+            Console.WriteLine("║                   GUIDE UTILISATEUR                           ║");
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
             Console.WriteLine();
             Console.WriteLine("OBJECTIF : Créez des guerriers et organisez des duels et tournois épiques !");
             Console.WriteLine();
@@ -157,38 +157,68 @@ namespace Brief_Duel_Guerriers
         // méthode pour ajouter un ajouter un guerrier 
         public static void AjouterGuerrier()
         {
-            Console.WriteLine($"Saissisez le nom du nouveau guerrier");
-            string nom = Console.ReadLine(); // demande le nom
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         CRÉER UN GUERRIER              ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
 
+            // demande de saisir le nom de guerrier ave la methode LireNomValide
+            string nom = LireNomValide();
 
-            Console.WriteLine($"Saissisez les points de vie du nouveau guerrier");
-            int pointsDeVie = 0;
+            // demande avec la methode LiereEntierValide de saisir les PV du guerrier avec une condition : PV entre 10 et 100 et nbr d'attaque entre 1 et 10
+            int pointsDeVie = LireEntierValide("Saisissez les Points de vie entre", 10, 100);
+            int nbDesAttaques = LireEntierValide("Saisissez le Nombre de dé d'attaque entre", 1, 10);
 
-            int.TryParse(Console.ReadLine(), out pointsDeVie); // demande les pv
-            if (pointsDeVie <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
-            {
-                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
-                Console.WriteLine("resaissisez un chiffre positif");
-                int.TryParse(Console.ReadLine(), out pointsDeVie);
-            }
-
-
-            Console.WriteLine($"Saissisez le nombre d'attaque du nouveau guerrier");
-            int nbDesAttaques;
-
-            int.TryParse(Console.ReadLine(), out nbDesAttaques); // demande le nombre d'attaque 
-            if (nbDesAttaques <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
-            {
-                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
-                Console.WriteLine("resaissisez un chiffre positif");
-                int.TryParse(Console.ReadLine(), out nbDesAttaques);
-            }
             Guerrier liste = new Guerrier(nom, pointsDeVie, nbDesAttaques);
             NouveauGuerrier.Add(liste);
 
             Console.WriteLine($"Vous avez crée un nouveau guerrier qui s'appelle {nom} qui à {pointsDeVie} PV et {nbDesAttaques} attaques");
 
         }
+
+        // Methode pour la valida du nom siaisie (non vide, alphanumérique) du guerrier créé
+        static string LireNomValide()
+        {
+            // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
+            while (true)
+            {
+                Console.Write("Saisissez le nom du Guerrier : ");
+                string nom = Console.ReadLine();
+
+                // Condition qui permet de verifier que la saisie  est valide en fonction de la condition 
+
+                if (string.IsNullOrWhiteSpace(nom))
+                {
+                    Console.WriteLine("Erreur ! le nom sisie ne peut pas etre vide"); // Si la saisie est invalide => message erreur et redemande de saisir 
+                    continue;
+                }
+                return nom;
+
+            }
+        }
+
+        // Méthode pour la validation du nombre sisie pour les PV et le nbr d'attaque du guerrier créé
+        static int LireEntierValide(string message, int min, int max)
+        {
+            int nombre = 0; 
+
+            // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
+            while (true)
+            {
+                Console.Write($"{message} ({min}-{max}) : "); // Affiche le message avec la plage autorisé "Votre choix (1-8) : "
+                string input = Console.ReadLine();
+
+                // Condition qui permet de verifier que la saisie convertie  est valide en fonction de la plage fixée
+                if (int.TryParse(input, out nombre) && nombre >= min && nombre <= max)
+                {
+                    return nombre;
+                }
+
+                Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+            }
+        }
+
 
         // Méthode pour afficher la liste des guerrier
 
