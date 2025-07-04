@@ -130,6 +130,27 @@ namespace Brief_Duel_Guerriers
 
         }
 
+        // Méthodes pour la validation du choix numerique des options à laquel on applicque un min et un max
+        static int LireChoixUtilisateur(string message, int min, int max)
+        {
+            int choix;
+
+            // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
+            while (true)
+            {
+                Console.Write($"{message} ({min}-{max}) : ");      // Affiche le message avec la plage autorisé "Votre choix (1-8) : "
+                string input = Console.ReadLine();
+
+                // Condition qui permet de verifier que la saisie convertie  est valide en fonction de la plage fixée
+                if (int.TryParse(input, out choix) && choix >= min && choix <= max)
+                {
+                    return choix;
+                }
+
+                Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+            }
+        }
+
         // création d'une liste pour stocker les nouveaux guerrier 
         static List<Guerrier> NouveauGuerrier = new List<Guerrier>();
 
