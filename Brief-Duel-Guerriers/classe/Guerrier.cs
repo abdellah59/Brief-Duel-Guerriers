@@ -38,7 +38,7 @@ namespace Brief_Duel_Guerriers.classe
         //  Méthodes Essentielles
         public virtual void AfficherInfos()
         {
-            Console.WriteLine($"Le guerrier s'appelle {Nom} et à {PointsDeVie} PV et le nombre d'attaque est de {NbDesAttaques} ");
+            Console.WriteLine($"{Nom} à {PointsDeVie} PV et {NbDesAttaques} attaque de dés.");
         }
 
         // Méthode pour attaquer avec le lancé des dés
@@ -68,7 +68,7 @@ namespace Brief_Duel_Guerriers.classe
             {
                 PointsDeVie = 0;
             }
-            Console.WriteLine($"Le nombre de dégats est de {degats}, il reste maintenant {PointsDeVie} PV ");
+            Console.WriteLine($"{Nom} à subit {degats} dégats et il reste maintenant {PointsDeVie} PV ");
 
         }
     }

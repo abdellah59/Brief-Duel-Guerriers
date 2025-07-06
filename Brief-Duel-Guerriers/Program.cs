@@ -94,9 +94,9 @@ namespace Brief_Duel_Guerriers
                     AjouterGuerrier();
                     break;
 
-                /*case "2":
-                    SupprimerGuerriers();
-                    break;*/
+                case 2:
+                    SupprimerGuerrier();
+                    break;
 
                 case 3:
                     AfficherListeGuerriers();
@@ -268,6 +268,59 @@ namespace Brief_Duel_Guerriers
             }
         }
 
+        // Methode pour suprimmer un Guerrier de la liste 
+        static void SupprimerGuerrier()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║        SUPPRIMER UN GUERRIER           ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Verificationsi la liste est vide ou pas : avec une condition  
+
+            if (listeGuerriers.Count == 0)
+            {
+                Console.WriteLine("Aucun guerrier à supprimer !");
+                Console.WriteLine("Appuyez sur une touche pour continuer...");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+
+            // Affichage de la liste des giuerriers avec des numéros pour chaque guerrier
+
+            Console.WriteLine("LISTE DES GUERRIERS :");
+            for (int i = 0; i < listeGuerriers.Count ; i++) // Boucle for qui parcourt la liste.
+            {
+                Console.Write($"{i + 1}"); 
+                listeGuerriers[i].AfficherInfos();
+            }
+
+            // Ajout d'une option pour permettre à l'utlisateur d'annuler la supression
+            Console.WriteLine();
+            Console.WriteLine("Saisisseez 0 pour annuler la supression");
+            Console.WriteLine();
+
+            // Demande à l’utilisateur de choisir un guerrier à supprimer :
+            int choix = LireChoixUtilisateur("Guerrier à supprimer", 0, listeGuerriers.Count);
+
+            if (choix == 0) // Si le choix est 0 => annulation de la supression 
+            {
+                Console.WriteLine("Suppression annulée.");
+            }
+            else //  Sinon l’utilisateur a choisi un guerrier à supprimer : 
+            {
+                string nomSupprime = listeGuerriers[choix - 1].GetNom(); // On enlève 1 car la liste commence à 0 et on récupère le nom du guerrier avant suppression.
+                listeGuerriers.RemoveAt(choix - 1); // supprime le guerrier de la liste.
+                Console.WriteLine($"{nomSupprime} a été supprimé de la liste.");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
+        }     
 
         // Méthode pour afficher la liste des guerrier
 
