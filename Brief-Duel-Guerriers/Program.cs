@@ -293,7 +293,7 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("LISTE DES GUERRIERS :");
             for (int i = 0; i < listeGuerriers.Count ; i++) // Boucle for qui parcourt la liste.
             {
-                Console.Write($"{i + 1}"); 
+                Console.Write($"{i + 1} : "); 
                 listeGuerriers[i].AfficherInfos();
             }
 
@@ -323,15 +323,56 @@ namespace Brief_Duel_Guerriers
         }     
 
         // Méthode pour afficher la liste des guerrier
-
         public static void AfficherListeGuerriers()
         {
-            foreach (Guerrier liste in listeGuerriers) // boucle pour parcourir la liste
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         LISTE DES GUERRIERS            ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Condition pour verifier si la liste est vide, afficher un message d'information
+            if (listeGuerriers.Count == 0)
             {
-                liste.AfficherInfos();
+                Console.WriteLine("Aucun guerrier créé !!.");
+                Console.WriteLine("Utilisez l'option 1 pour créer votre premier guerrier !");
+            }
+            else // Sinon on affiche le nombre total de guerriers dans la liste 
+            {
+                Console.WriteLine($"Total : {listeGuerriers.Count} guerrier(s)");
+                Console.WriteLine();
+
+                for (int i = 0; i < listeGuerriers.Count; i++) // On Parcourt la liste des guerriers et affiche leurs informations
+                {
+                    Console.Write($"  {i + 1}. ");
+                    listeGuerriers[i].AfficherInfos();
+
+                    // On affi le type de guerrier en parcourant la liste avec des condition pour chaque type 
+                    if (listeGuerriers[i] is Sorcier)
+                    {
+                        Console.WriteLine("     Type: Sorcier");
+                    }
+                    else if (listeGuerriers[i] is Gobelin nain)
+                    {
+                        Console.WriteLine($"     Type: Gobelin {(nain.GetArmureLourde() ? "(avec armure lourde)" : "(sans armure lourde)")}"); // On affiche si le gobelin a une armure lourde ou non
+                    }
+                    else if (listeGuerriers[i] is Sorciere)
+                    {
+                        Console.WriteLine("     Type: Sorcière");
+                    }
+                    else
+                    {
+                        Console.WriteLine("     Type: Guerrier classique");
+                    }
+                    Console.WriteLine();
+                }
             }
 
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
         }
-
     }
+
+         
 }
