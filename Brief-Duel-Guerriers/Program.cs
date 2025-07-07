@@ -41,7 +41,8 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("  4. Lancer un duel  - Organisez un combat entre deux combattants");
             Console.WriteLine("  5. Lancer un tournoi - Organisez un combat à élimination");
             Console.WriteLine("  6. Afficher l'historique - Consultez les champions précédents");
-            Console.WriteLine("  7. Quitter - Fermez le programme");
+            Console.WriteLine("  7. Afficher le guide utlisateur ");
+            Console.WriteLine("  8. Quitter - Fermez le programme");
             Console.WriteLine();
             Console.WriteLine("TYPES DE GUERRIERS :");
             Console.WriteLine("  - Guerrier : Combattant classique et équilibré");
@@ -110,9 +111,9 @@ namespace Brief_Duel_Guerriers
                     LancerTournoi();
                     break;
 
-               /* case 6:
+                case 6:
                     AfficherHistorique();
-                    break;*/
+                    break;
 
                 case 7:
                     AfficherGuideUtilisateur();
@@ -432,6 +433,7 @@ namespace Brief_Duel_Guerriers
 
             // On lance une boucle de combat jusqu'à ce qu'un guerrier soit vaincu 
             int tour = 1;
+            string vainqueur = "";
             while (combattant1.GetPointsDeVie() > 0 && combattant2.GetPointsDeVie() > 0)
             {
                 Console.WriteLine($"\n--- Tour {tour} ---\n");
@@ -477,6 +479,7 @@ namespace Brief_Duel_Guerriers
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n Le {combattant1.GetTypeCombattant()} : {combattant1.GetNom()} remporte le duel !");
                 Console.ResetColor();
+                vainqueur = combattant1.GetNom();
             }
             else
             {
@@ -484,6 +487,11 @@ namespace Brief_Duel_Guerriers
                 Console.WriteLine($"\n Le {combattant2.GetTypeCombattant()} : {combattant2.GetNom()} remporte le duel !");
                 Console.ResetColor();
             }
+
+            // On enregiste le vainqueur pour l'importer l'historique
+            string entreeHistorique = $"Duel : #{compteurDuels} - {combattant1.GetNom()} VS {combattant2.GetNom()} - Vainqueur: {vainqueur} en ({tour} tours)";
+            historiqueDuels.Add(entreeHistorique);
+            compteurDuels++;
 
             // Restaurer les PV
             combattant1.SetPointsDeVie(pvOriginal1);
@@ -541,6 +549,7 @@ namespace Brief_Duel_Guerriers
             }
 
             int tour = 1;
+            string champion = "";
 
             // Le tournoi continue tant qu'il reste plus d'un guerrier dans la liste 
             while (participants.Count > 1)
@@ -626,10 +635,17 @@ namespace Brief_Duel_Guerriers
             if (participants.Count == 1)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n         CHAMPION DU TOURNOI : {participants[0].GetNom()} !");
+                champion = participants[0].GetNom();
+                Console.WriteLine($"\n         CHAMPION DU TOURNOI : {champion} !");
                 Console.ResetColor();
                 participants[0].AfficherInfos();
             }
+
+            // On enregiste le champion pour l'importer l'historique
+
+            string entreeTournoi = $"Tournoi : #{compteurTournois} - {listeCombattants.Count} participants - Champion: {champion} en ({tour - 1} tours)";
+            historiqueTournois.Add(entreeTournoi);
+            compteurTournois++;
 
             // On réinitialise les PV des combattants pour le prochain tournoi
             foreach (var combattant in listeCombattants)
@@ -644,6 +660,110 @@ namespace Brief_Duel_Guerriers
             Console.ReadKey();
             Console.Clear();
 
+        }
+
+        // Liste pour stocker l'historique des duels
+        static List<string> historiqueDuels = new List<string>();
+
+        // Liste pour stocker l'historique des tournois
+        static List<string> historiqueTournois = new List<string>();
+
+        // On initiailise un compteur pour numéroter les événements dans l'historique 
+        static int compteurDuels = 1;
+        static int compteurTournois = 1;
+
+        static void AfficherHistoriqueDuels()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         HISTORIQUE DES DUELS           ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            if (historiqueDuels.Count == 0)
+            {
+                Console.WriteLine("Aucun duel dans l'historique !");
+                return;
+            }
+
+            Console.WriteLine($"Total des duels : {historiqueDuels.Count}");
+            Console.WriteLine();
+
+            for (int i = 0; i < historiqueDuels.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {historiqueDuels[i]}");
+            }
+        }
+
+        static void AfficherHistoriqueTournois()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║        HISTORIQUE DES TOURNOIS         ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            if (historiqueTournois.Count == 0)
+            {
+                Console.WriteLine("Aucun tournoi dans l'historique !");
+                return;
+            }
+
+            Console.WriteLine($"Total des tournois : {historiqueTournois.Count}");
+            Console.WriteLine();
+
+            for (int i = 0; i < historiqueTournois.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {historiqueTournois[i]}");
+            }
+        }
+
+        static void AfficherHistorique()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         HISTORIQUE COMPLET             ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Créer une liste combinée avec les dates
+            List<string> historiqueComplet = new List<string>();
+
+            // Ajouter tous les duels
+            foreach (string duel in historiqueDuels)
+            {
+                historiqueComplet.Add($"[DUEL] {duel}");
+            }
+
+            // Ajouter tous les tournois
+            foreach (string tournoi in historiqueTournois)
+            {
+                historiqueComplet.Add($"[TOURNOI] {tournoi}");
+            }
+
+            if (historiqueComplet.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Aucun événement dans l'historique !");
+                Console.ResetColor();
+                Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal...");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+
+            Console.WriteLine($"Total des événements : {historiqueComplet.Count}");
+            Console.WriteLine();
+
+            for (int i = 0; i < historiqueComplet.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {historiqueComplet[i]}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour revenir au menu principal..");
+            Console.ReadKey();
+            Console.Clear();
         }
 
     }
