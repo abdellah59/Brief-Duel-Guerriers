@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brief_Duel_Guerriers.classe
 {
-    internal class Guerrier
+    internal class Guerrier : ICombattant
     {
         // attributs partie 1
 
@@ -29,7 +29,8 @@ namespace Brief_Duel_Guerriers.classe
         public int GetPointsDeVie() {
             return PointsDeVie;
         }
-        public void SetPointsDeVie(int pointsDeVie) { 
+        public void SetPointsDeVie(int pointsDeVie) {
+           
         }
         public int GetNbDesAttaque() {
             return NbDesAttaques;
