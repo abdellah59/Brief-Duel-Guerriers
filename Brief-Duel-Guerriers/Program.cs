@@ -35,10 +35,10 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("OBJECTIF : Créez des guerriers et organisez des duels et tournois épiques !");
             Console.WriteLine();
             Console.WriteLine("OPTIONS DU MENU :");
-            Console.WriteLine("  1. Créer un guerrier - Ajoutez un nouveau combattant à votre armée");
-            Console.WriteLine("  2. Supprimer un guerrier - Retirez un guerrier de la liste");
+            Console.WriteLine("  1. Créer un combattants - Ajoutez un nouveau combattant à votre armée");
+            Console.WriteLine("  2. Supprimer un combattant - Retirez un combattant de la liste");
             Console.WriteLine("  3. Afficher la liste - Consultez tous vos guerriers");
-            Console.WriteLine("  4. Lancer un duel  - Organisez un combat entre deux combatants");
+            Console.WriteLine("  4. Lancer un duel  - Organisez un combat entre deux combattants");
             Console.WriteLine("  5. Lancer un tournoi - Organisez un combat à élimination");
             Console.WriteLine("  6. Afficher l'historique - Consultez les champions précédents");
             Console.WriteLine("  7. Quitter - Fermez le programme");
@@ -121,7 +121,9 @@ namespace Brief_Duel_Guerriers
                 case 8: return false; // retourne false si l’utilisateur choisit de quitter et donc fin de la boucle.
 
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Choix invalide. Veuillez réessayer avec 1,2,3,4,5,6,7 ou 8."); // Affiche une erreur quand l'utlisateur fait un choix qui ne correspond pas aux options proposé
+                    Console.ResetColor();
                     break;
 
             }
@@ -130,7 +132,7 @@ namespace Brief_Duel_Guerriers
 
         }
 
-        // Méthodes pour la validation du choix numerique des options à laquel on applicque un min et un max
+        // Méthodes pour la validation du choix numerique des options à laquel on applique un min et un max
         static int LireChoixUtilisateur(string message, int min, int max)
         {
             int choix;
@@ -146,8 +148,9 @@ namespace Brief_Duel_Guerriers
                 {
                     return choix;
                 }
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+                Console.ResetColor();
             }
         }
 
@@ -169,7 +172,7 @@ namespace Brief_Duel_Guerriers
             int pointsDeVie = LireEntierValide("Saisissez les Points de vie entre", 10, 100);
             int nbDesAttaques = LireEntierValide("Saisissez le Nombre de dé d'attaque entre", 1, 10);
 
-            // Choix du tupe de guerrier avec un switch 
+            // Choix du type de guerrier avec un switch 
 
             Console.WriteLine();
             Console.WriteLine("TYPES DE Combatant :");
@@ -191,7 +194,7 @@ namespace Brief_Duel_Guerriers
                     nouveauCombattant = new Guerrier(nom, pointsDeVie, nbDesAttaques);
                     break;
 
-                // demande à l’utilisateur s’il souhaite équiper le Gobelin d'une armure lourde. Reponse covertie en true si la reponse commence par o
+                // demande à l’utilisateur s’il souhaite équiper le Gobelin d'une armure lourde. Reponse convertie en true si la reponse commence par o
                 case 2:
                     Console.WriteLine();
                     Console.Write("Vous voulez équiper le gobelin avec une Armure Lourde ? (o/n): ");
@@ -215,7 +218,9 @@ namespace Brief_Duel_Guerriers
 
             // Affichage d'un message confirmation et des info du guerrier créer
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Combattant créé avec succès");
+            Console.ResetColor();
             Console.Write("Nouveau Combattant : ");
             nouveauCombattant.AfficherInfos();
             Console.WriteLine();
@@ -225,7 +230,7 @@ namespace Brief_Duel_Guerriers
 
         }
 
-        // Methode pour la valida du nom siaisie (non vide, alphanumérique) du guerrier créé
+        // Methode pour la valida du nom saisie (non vide, alphanumérique) du guerrier créé
         static string LireNomValide()
         {
             // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
@@ -238,7 +243,9 @@ namespace Brief_Duel_Guerriers
 
                 if (string.IsNullOrWhiteSpace(nom))
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Erreur ! le nom sisie ne peut pas etre vide"); // Si la saisie est invalide => message erreur et redemande de saisir 
+                    Console.ResetColor();
                     continue;
                 }
                 return nom;
@@ -246,7 +253,7 @@ namespace Brief_Duel_Guerriers
             }
         }
 
-        // Méthode pour la validation du nombre sisie pour les PV et le nbr d'attaque du guerrier créé
+        // Méthode pour la validation du nombre saisie pour les PV et le nbr d'attaque du guerrier créé
         static int LireEntierValide(string message, int min, int max)
         {
             int nombre = 0;
@@ -257,13 +264,14 @@ namespace Brief_Duel_Guerriers
                 Console.Write($"{message} ({min}-{max}) : "); // Affiche le message avec la plage autorisé "Votre choix (1-8) : "
                 string input = Console.ReadLine();
 
-                // Condition qui permet de verifier que la saisie convertie  est valide en fonction de la plage fixée
+                // Condition qui permet de vérifier que la saisie convertie  est valide en fonction de la plage fixée
                 if (int.TryParse(input, out nombre) && nombre >= min && nombre <= max)
                 {
                     return nombre;
                 }
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+                Console.ResetColor();
             }
         }
 
@@ -276,18 +284,20 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
-            // Verificationsi la liste est vide ou pas : avec une condition  
+            // Verification si la liste est vide ou pas : avec une condition  
 
             if (listeCombattants.Count == 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Aucun combattant à supprimer !");
+                Console.ResetColor();
                 Console.WriteLine("Appuyez sur une touche pour continuer...");
                 Console.ReadKey();
                 Console.Clear();
                 return;
             }
 
-            // Affichage de la liste des giuerriers avec des numéros pour chaque guerrier
+            // Affichage de la liste des guerriers avec des numéros pour chaque guerrier
 
             Console.WriteLine("LISTE DES COMBATTANTS :");
             for (int i = 0; i < listeCombattants.Count; i++) // Boucle for qui parcourt la liste.
@@ -296,23 +306,29 @@ namespace Brief_Duel_Guerriers
                 listeCombattants[i].AfficherInfos();
             }
 
-            // Ajout d'une option pour permettre à l'utlisateur d'annuler la supression
+            // Ajout d'une option pour permettre à l'utlisateur d'annuler la suppression
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Saisisseez 0 pour annuler la supression");
+            Console.ResetColor();
             Console.WriteLine();
 
             // Demande à l’utilisateur de choisir un guerrier à supprimer :
             int choix = LireChoixUtilisateur("Combattant à supprimer", 0, listeCombattants.Count);
 
-            if (choix == 0) // Si le choix est 0 => annulation de la supression 
+            if (choix == 0) // Si le choix est 0 => annulation de la suppression 
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Suppression annulée.");
+                Console.ResetColor();
             }
             else //  Sinon l’utilisateur a choisi un guerrier à supprimer : 
             {
                 string nomSupprime = listeCombattants[choix - 1].GetNom(); // On enlève 1 car la liste commence à 0 et on récupère le nom du guerrier avant suppression.
                 listeCombattants.RemoveAt(choix - 1); // supprime le guerrier de la liste.
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{nomSupprime} a été supprimé de la liste.");
+                Console.ResetColor();
             }
 
             Console.WriteLine();
@@ -330,10 +346,12 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
-            // Condition pour verifier si la liste est vide, afficher un message d'information
+            // Condition pour vérifier si la liste est vide, afficher un message d'information
             if (listeCombattants.Count == 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Aucun combattant créé !!.");
+                Console.ResetColor();
                 Console.WriteLine("Utilisez l'option 1 pour créer votre premier combattant !");
             }
             else // Sinon on affiche le nombre total de guerriers dans la liste 
@@ -354,7 +372,7 @@ namespace Brief_Duel_Guerriers
             Console.Clear();
         }
 
-        // Méthode pour lancer un Duel entre 2 guerrier qu'on peut chosir dans la liste
+        // Méthode pour lancer un Duel entre 2 guerrier qu'on peut choisir dans la liste
 
         static void LancerDuel()
         {
@@ -369,7 +387,10 @@ namespace Brief_Duel_Guerriers
             // Condition pour vérifier qu'il y a au moins 2 guerriers dans la liste pour lancer un duel 
             if (listeCombattants.Count < 2)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Il faut au moins 2 combattants pour lancer un duel !");
+                Console.ResetColor();
+
                 Console.WriteLine("Appuyez sur une touche pour revenir au menu principal..");
                 Console.ReadKey();
                 Console.Clear();
@@ -386,22 +407,24 @@ namespace Brief_Duel_Guerriers
             }
 
             // Système de choix avec avec saisi du numero du premier guerrier qu'on choisi 
-            int choix1 = LireChoixUtilisateur("Chisissez votre Premier Combattant : ", 1, (listeCombattants.Count));
+            int choix1 = LireChoixUtilisateur("Choisissez votre Premier Combattant : ", 1, (listeCombattants.Count));
 
             // Choisir le deuxième guerrier
-            int choix2 = LireChoixUtilisateur("Chisissez votre Deuxieme Combattant", 1, (listeCombattants.Count));
+            int choix2 = LireChoixUtilisateur("Choisissez votre Deuxieme Combattant", 1, (listeCombattants.Count));
 
             if (choix1 == choix2)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Vous devez choisir deux Combattants différents !");
+                Console.ResetColor();
                 return;
             }
 
-            // On eécupéree les deux guerriers avec un -1 car la liste commence à 0
+            // On récupère les deux guerriers avec un -1 car la liste commence à 0
             ICombattant combattant1 = listeCombattants[choix1 - 1];
             ICombattant combattant2 = listeCombattants[choix2 - 1];
 
-            // On Sauvegardee les PV originaux
+            // On Sauvegarde les PV originaux
             int pvOriginal1 = combattant1.GetPointsDeVie();
             int pvOriginal2 = combattant2.GetPointsDeVie();
 
@@ -425,7 +448,9 @@ namespace Brief_Duel_Guerriers
                 // Vérifier si Guerrier 2 est vaincu 
                 if (combattant2.GetPointsDeVie() <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{combattant2.GetNom()} est vaincu !");
+                    Console.ResetColor();
                     break;
                 }
 
@@ -437,21 +462,27 @@ namespace Brief_Duel_Guerriers
                 // Vérifier si Guerrier 1 est vaincu 
                 if (combattant1.GetPointsDeVie() <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{combattant1.GetNom()} est vaincu !");
+                    Console.ResetColor();
                     break;
                 }
 
                 tour++;
             }
 
-            // On déterminer qui est le vainqueur poaur l'afficher avec une condition qui verifier les PV de chaque guerrier
+            // On déterminer qui est le vainqueur pour l'afficher avec une condition qui vérifie les PV de chaque guerrier
             if (combattant1.GetPointsDeVie() > 0)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n Le {combattant1.GetTypeCombattant()} : {combattant1.GetNom()} remporte le duel !");
+                Console.ResetColor();
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n Le {combattant2.GetTypeCombattant()} : {combattant2.GetNom()} remporte le duel !");
+                Console.ResetColor();
             }
 
             // Restaurer les PV
@@ -464,7 +495,7 @@ namespace Brief_Duel_Guerriers
             Console.Clear();
         }
 
-        // Methode pour lancer un tournoi par elimination 
+        // Méthode pour lancer un tournoi par élimination 
         public static void LancerTournoi()
         {
             Console.Clear();
@@ -476,7 +507,9 @@ namespace Brief_Duel_Guerriers
             // Vérifier qu'il y a au moins 2 guerriers
             if (listeCombattants.Count < 2)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Il faut au moins 2 Combattants pour lancer un Tournoi !");
+                Console.ResetColor();
                 Console.WriteLine("Appuyez sur une touche pour revenir au menu principal...");
                 Console.ReadKey();
                 Console.Clear();
@@ -496,7 +529,9 @@ namespace Brief_Duel_Guerriers
                 pvOriginaux[combattant] = combattant.GetPointsDeVie();
             }
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Tournoi lancé avec {participants.Count} participants !");
+            Console.ResetColor();
 
             // On affiche les participants
             Console.WriteLine("\nParticipants :");
@@ -507,12 +542,12 @@ namespace Brief_Duel_Guerriers
 
             int tour = 1;
 
-            // Le tournoir continue tant qu'il reste plus d'un guerrier dans la liste 
+            // Le tournoi continue tant qu'il reste plus d'un guerrier dans la liste 
             while (participants.Count > 1)
             {
                 Console.WriteLine($"\n==================== TOUR {tour} ====================");
 
-                // On crée une liste de survicant à partir de la liste de vainque de la manche precedante 
+                // On crée une liste de survivant à partir de la liste de vainque de la manche précèdante 
                 List<ICombattant> survivants = new List<ICombattant>();
 
                 // Organiser les combats (2 par 2)
@@ -544,19 +579,25 @@ namespace Brief_Duel_Guerriers
                         // Condition pour déterminer le vainqueur en fonction des PV de chaque guerrier
                         if (Combattant1.GetPointsDeVie() > 0)
                         {
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"  {Combattant1.GetNom()} remporte le combat !");
+                            Console.ResetColor();
                             survivants.Add(Combattant1);
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"  {Combattant2.GetNom()} remporte le combat !");
+                            Console.ResetColor();
                             survivants.Add(Combattant2);
                         }
                     }
                     else
                     {
                         // Si on une liste avec un nbr de Guerrier impair il passe automatiquement au tour suivant 
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"  {participants[i].GetNom()} passe automatiquement au tour suivant !");
+                        Console.ResetColor();
                         survivants.Add(participants[i]);
                     }
                 }
@@ -564,7 +605,7 @@ namespace Brief_Duel_Guerriers
                 // Mise à jour de la liste des participants
                 participants = survivants;
 
-                // on aAffiche les survivants de la manche precedante
+                // on aAffiche les survivants de la manche precedant
                 Console.WriteLine($"\nSurvivants du tour {tour} :");
                 foreach (var survivant in participants)
                 {
@@ -581,14 +622,16 @@ namespace Brief_Duel_Guerriers
                 }
             }
 
-            // Conditoin pour afficher le vainqueur du tournoi si il reste que un seul gierrier dans la liste des participant 
+            // Condition pour afficher le vainqueur du tournoi si il reste que un seul guerrier dans la liste des participant 
             if (participants.Count == 1)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n         CHAMPION DU TOURNOI : {participants[0].GetNom()} !");
+                Console.ResetColor();
                 participants[0].AfficherInfos();
             }
 
-            // On reinitialise les PV des combattants pour le prochain tournoi
+            // On réinitialise les PV des combattants pour le prochain tournoi
             foreach (var combattant in listeCombattants)
             {
                 if (pvOriginaux.ContainsKey(combattant))
