@@ -37,5 +37,11 @@ namespace Brief_Duel_Guerriers.classe
             Console.WriteLine($"le total des dégats est {totalDesDegats} ");
             return totalDesDegats;
         }
+
+        // Definition du type pour la sauvegarde
+        public override string GetTypeCombattant()
+        {
+            return "Sorcière";
+        }
     }
 };

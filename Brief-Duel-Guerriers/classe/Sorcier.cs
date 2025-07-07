@@ -7,70 +7,148 @@ using System.Xml.Schema;
 
 namespace Brief_Duel_Guerriers.classe
 {
-    internal class Sorcier : Guerrier
+    internal class Sorcier : Guerrier // Hérite de Guerrier
     {    // attribut
-        private int Mana = 50;
-        // création d'une liste de sorts
-        private List<string> sorts = new List<string> { "Boule de Feu", "Soin", "Bouclier Magique" };
+        private int Mana;
+        private int ManaMax;
+        private List<string> sorts;
+        private bool Bouclier;
 
-        // herite de guerrier
-        public Sorcier(string nom, int pointsDeVie, int nbDesAttaques, int mana) : base(nom, pointsDeVie, nbDesAttaques)
+        // Constructeur : herite de guerrier
+        public Sorcier(string nom, int pointsDeVie, int nbDesAttaques, int manaMin = 50) : base(nom, pointsDeVie, nbDesAttaques)
         {
-            Mana = mana;
-            mana = Math.Min(mana,100); // maximun 100
+            Mana = manaMin;
+            ManaMax = 100;
+            Bouclier = false;
+            
+            // création d'une liste de sorts
+            sorts = new List<string> { "Boule de Feu", "Soin", "Bouclier Magique" };
         }
+
+        //Methode publique : Getter pour le sorcier
+
+        public int GetMana()
+        {
+            return Mana;
+        }
+
+        public int GetManaMax()
+        {
+            return ManaMax;
+        }
+        public bool GetBouclier()
+        {
+            return Bouclier;
+        }
+
+
         Random random = new Random(); // création d'un random
         public int sortsAleatoire;
         int degats = 0;
+
+        // Méthode spécifique  : Redéfinition de la méthode Attaquer 
         public override int Attaquer()
         {
-            if (Mana >= 10) // si mana est supérieur ou égal
+            RegenererMana(5); // Régénération de mana au début du tour
+                              // Vérifier si le sorcier a assez de mana pour un sort
+            if (Mana >= 10)
             {
-               
-                sortsAleatoire = random.Next(1, 4); // random de 1 à 3
+                return LancerSort();
             }
-            if (sortsAleatoire == 1) // si random = 1
+            else
             {
-                Console.WriteLine($"Le guerrier {GetNom} lance une boule de feu");
-                return degats = base.Attaquer() + 10; // dégat + 10
+                // Attaque normale si pas assez de mana
+                Console.WriteLine($"{GetNom()} n'a pas assez de mana pour lancer un sort !");
+                return base.Attaquer();
             }
-            else if (sortsAleatoire == 2) // si random = 2
-            {
-                Console.WriteLine($"Le guerrier {GetNom} utilise une potion de soin");
-                return GetPointsDeVie() + 5; // + 5 pv
-            }
-            else if (sortsAleatoire == 3) // si random = 3
-            {
-                Console.WriteLine($"Le guerrier {GetNom} utilise un bouclier magique");
-                return degats = base.Attaquer(); 
-            }
-            return degats;
-            Mana -= 10; // mana - 10
         }
-        bool armureLourde;
+
+
+        // Méthode pour lancer un sort
+        private int LancerSort()
+        {
+            Random random = new Random();
+            string sortChoisi = sorts[random.Next(sorts.Count)];
+
+            Console.WriteLine($"{GetNom()} lance le sort '{sortChoisi}' !");
+
+            int degats = 0;
+
+            switch (sortChoisi)
+            {
+                case "Boule de Feu":
+                    // Attaque normale + 10 dégâts bonus
+                    degats = base.Attaquer() + 10;
+                    Console.WriteLine($"La boule de feu ajoute 10 dégâts ! Total : {degats}");
+                    break;
+
+                case "Soin":
+                    // Se soigner de 5 PV
+                    int anciensPV = GetPointsDeVie();
+                    SetPointsDeVie(GetPointsDeVie() + 5);
+                    Console.WriteLine($"{GetNom()} lance un sort de soin + 5 PV ! ({anciensPV} -> {GetPointsDeVie()})");
+                    // Attaque normale après le soin
+                    degats = base.Attaquer();
+                    break;
+
+                case "Bouclier Magique":
+                    // Activer le bouclier magique
+                    Bouclier = true;
+                    Console.WriteLine($"{GetNom()} active un bouclier magique ! (réduit les dégâts de 50%)");
+                    // Attaque normale après le bouclier
+                    degats = base.Attaquer();
+                    break;
+            }
+
+            // Consommer le mana
+            Mana -= 10;
+            Console.WriteLine($"Mana restant : {Mana}/{ManaMax}");
+
+            return degats;
+        }
         public override void SubirDegats(int degats)
         {
-
-            if (armureLourde) // Conditon qui determine si armure lourde alros les dégats sont divisé par 2
+            if (Bouclier)
             {
+                // Réduire les dégâts de 50%
                 degats = degats / 2;
-                Console.WriteLine($"{GetNom()} porte une armure lourde : Dégats sont réduit à {degats}");
+                Console.WriteLine($"Le bouclier magique réduit les dégâts à {degats} !");
+
+                // Désactiver le bouclier après utilisation
+                Bouclier = false;
+                Console.WriteLine("Le bouclier magique se dissipe.");
             }
 
-            // Appel de la methode de la classe mère
+            // Appel de la méthode de la classe parent
             base.SubirDegats(degats);
-
         }
 
-        public void RegenererMania(int mania)
+        // Méthode pour régénérer le mana
+        public void RegenererMana(int montant)
         {
-            Mana += 5; // mana + 5 
-            Console.WriteLine($"le nombre de mana est {Mana}");
+            int ancienMana = Mana;
+            Mana += montant;
+
+            if (Mana > ManaMax)
+            {
+                Mana = ManaMax;
+            }
+
+            if (montant > 0 && ancienMana < ManaMax)
+            {
+                Console.WriteLine($"{GetNom()} régénère {Mana - ancienMana} mana ({ancienMana} -> {Mana})");
+            }
         }
 
         public void AfficherInfo()
         {
-            Console.WriteLine($"Le guerrier s'appelle {GetNom} et à {GetPointsDeVie} PV et le nombre d'attaque est de {GetNbDesAttaque} et le nombre de mana est {Mana} ");
+            Console.WriteLine($"Le sorcier {GetNom} à {GetPointsDeVie} PV et le nombre d'attaque est de : {GetNbDesAttaque} et le nombre de mana est : {Mana} / {ManaMax}");
+        }
+
+        // Definition du type pour la sauvegarde
+        public override string GetTypeCombattant()
+        {
+            return "Sorcier";
         }
     }
 }
