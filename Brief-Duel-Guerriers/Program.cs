@@ -121,7 +121,9 @@ namespace Brief_Duel_Guerriers
                 case 8: return false; // retourne false si l’utilisateur choisit de quitter et donc fin de la boucle.
 
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Choix invalide. Veuillez réessayer avec 1,2,3,4,5,6,7 ou 8."); // Affiche une erreur quand l'utlisateur fait un choix qui ne correspond pas aux options proposé
+                    Console.ResetColor();
                     break;
 
             }
@@ -146,8 +148,9 @@ namespace Brief_Duel_Guerriers
                 {
                     return choix;
                 }
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+                Console.ResetColor();
             }
         }
 
@@ -215,7 +218,9 @@ namespace Brief_Duel_Guerriers
 
             // Affichage d'un message confirmation et des info du guerrier créer
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Combattant créé avec succès");
+            Console.ResetColor();
             Console.Write("Nouveau Combattant : ");
             nouveauCombattant.AfficherInfos();
             Console.WriteLine();
@@ -238,7 +243,9 @@ namespace Brief_Duel_Guerriers
 
                 if (string.IsNullOrWhiteSpace(nom))
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Erreur ! le nom sisie ne peut pas etre vide"); // Si la saisie est invalide => message erreur et redemande de saisir 
+                    Console.ResetColor();
                     continue;
                 }
                 return nom;
@@ -262,8 +269,9 @@ namespace Brief_Duel_Guerriers
                 {
                     return nombre;
                 }
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+                Console.ResetColor();
             }
         }
 
@@ -276,18 +284,20 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
-            // Verificationsi la liste est vide ou pas : avec une condition  
+            // Verification si la liste est vide ou pas : avec une condition  
 
             if (listeCombattants.Count == 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Aucun combattant à supprimer !");
+                Console.ResetColor();
                 Console.WriteLine("Appuyez sur une touche pour continuer...");
                 Console.ReadKey();
                 Console.Clear();
                 return;
             }
 
-            // Affichage de la liste des giuerriers avec des numéros pour chaque guerrier
+            // Affichage de la liste des guerriers avec des numéros pour chaque guerrier
 
             Console.WriteLine("LISTE DES COMBATTANTS :");
             for (int i = 0; i < listeCombattants.Count; i++) // Boucle for qui parcourt la liste.
