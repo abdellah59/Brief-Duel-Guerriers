@@ -26,11 +26,11 @@ namespace Brief_Duel_Guerriers
 
         static void AfficherGuideUtilisateur()
         {
-            Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                    DUELS DE GUERRIERS                          ║");
-            Console.WriteLine("║                          ------                                ║");
-            Console.WriteLine("║                    GUIDE UTILISATEUR                           ║");
-            Console.WriteLine("╚════════════════════════════════════════════════════════════════╝");
+            Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║                  DUEL  DE  GUERRIERS                          ║");
+            Console.WriteLine("║                       ------                                  ║");
+            Console.WriteLine("║                   GUIDE UTILISATEUR                           ║");
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
             Console.WriteLine();
             Console.WriteLine("OBJECTIF : Créez des guerriers et organisez des duels et tournois épiques !");
             Console.WriteLine();
@@ -82,7 +82,7 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("║  7. Afficher le guide utlisateur       ║");
             Console.WriteLine("║  8. Quitter                            ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
-            Console.WriteLine($"Guerriers créés : {NouveauGuerrier.Count}");
+            Console.WriteLine($"Guerriers créés : {listeGuerriers.Count}");
             Console.WriteLine();
 
            
@@ -94,9 +94,9 @@ namespace Brief_Duel_Guerriers
                     AjouterGuerrier();
                     break;
 
-                /*case "2":
-                    SupprimerGuerriers();
-                    break;*/
+                case 2:
+                    SupprimerGuerrier();
+                    break;
 
                 case 3:
                     AfficherListeGuerriers();
@@ -152,54 +152,227 @@ namespace Brief_Duel_Guerriers
         }
 
         // création d'une liste pour stocker les nouveaux guerrier 
-        static List<Guerrier> NouveauGuerrier = new List<Guerrier>();
+        private static List<Guerrier> listeGuerriers = new List<Guerrier>();
 
         // méthode pour ajouter un ajouter un guerrier 
         public static void AjouterGuerrier()
         {
-            Console.WriteLine($"Saissisez le nom du nouveau guerrier");
-            string nom = Console.ReadLine(); // demande le nom
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         CRÉER UN GUERRIER              ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // demande de saisir le nom de guerrier ave la methode LireNomValide
+            string nom = LireNomValide();
+
+            // demande de saisie avec la methode LiereEntierValide de saisir les PV du guerrier avec une condition : PV entre 10 et 100 et nbr d'attaque entre 1 et 10
+            int pointsDeVie = LireEntierValide("Saisissez les Points de vie entre", 10, 100);
+            int nbDesAttaques = LireEntierValide("Saisissez le Nombre de dé d'attaque entre", 1, 10);
+
+            // Choix du tupe de guerrier avec un switch 
+
+            Console.WriteLine();
+            Console.WriteLine("TYPES DE GUERRIERS :");
+            Console.WriteLine("1. Guerrier classique");
+            Console.WriteLine("2  Gobelin:");
+            Console.WriteLine("3. Sorcière");
+            Console.WriteLine("4. Sorcier");
+            Console.WriteLine();
 
 
-            Console.WriteLine($"Saissisez les points de vie du nouveau guerrier");
-            int pointsDeVie = 0;
+            // Appelle la fonction LireChoixUtilisateur pour demander à l'utilisateur de choisir un type de guerrier entre 1 et 4)
+            int typeChoix = LireChoixUtilisateur("Choissez un Type de Guerrier", 1, 4);
 
-            int.TryParse(Console.ReadLine(), out pointsDeVie); // demande les pv
-            if (pointsDeVie <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
+            Guerrier nouveauGuerrier = null; //  variable qui contient l'objet du guerrier qu'on va créer
+
+            switch (typeChoix) 
             {
-                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
-                Console.WriteLine("resaissisez un chiffre positif");
-                int.TryParse(Console.ReadLine(), out pointsDeVie);
+                case 1: 
+                    nouveauGuerrier = new Guerrier(nom, pointsDeVie, nbDesAttaques);
+                    break;
+
+                // demande à l’utilisateur s’il souhaite équiper le Gobelin d'une armure lourde. Reponse covertie en true si la reponse commence par o
+                case 2:
+                    Console.WriteLine();
+                    Console.Write("Vous voulez équiper le gobelin avec une Armure Lourde ? (o/n): ");
+                    bool armureLourde = Console.ReadLine().ToLower().StartsWith("o");
+                    nouveauGuerrier = new Gobelin(nom, pointsDeVie, nbDesAttaques, armureLourde);
+                    break;
+
+                case 3:
+                    nouveauGuerrier = new Sorciere(nom, pointsDeVie, nbDesAttaques);
+                    break;
+
+                case 4:
+                    int mana = LireEntierValide("Mana", 10, 100); // demande de saisir une valeur de mana entre 10 et 100 avec la methode lireEntierValide
+                    nouveauGuerrier = new Sorcier(nom, pointsDeVie, nbDesAttaques, mana);
+                    break;
+
             }
 
+            // Ajout du nouveau guerrier créer dans la liste globale
+            listeGuerriers.Add(nouveauGuerrier);
 
-            Console.WriteLine($"Saissisez le nombre d'attaque du nouveau guerrier");
-            int nbDesAttaques;
-
-            int.TryParse(Console.ReadLine(), out nbDesAttaques); // demande le nombre d'attaque 
-            if (nbDesAttaques <= 0) // si le chiffre est inférieur ou égal à 0, l'utilisateur doit en saisir un a nouveau
-            {
-                Console.WriteLine("Vous ne pouvez pas choisir un chiffre inférieur ou égal à 0");
-                Console.WriteLine("resaissisez un chiffre positif");
-                int.TryParse(Console.ReadLine(), out nbDesAttaques);
-            }
-            Guerrier liste = new Guerrier(nom, pointsDeVie, nbDesAttaques);
-            NouveauGuerrier.Add(liste);
-
-            Console.WriteLine($"Vous avez crée un nouveau guerrier qui s'appelle {nom} qui à {pointsDeVie} PV et {nbDesAttaques} attaques");
+            // Affichage d'un message confirmation et des info du guerrier créer
+            Console.WriteLine();
+            Console.WriteLine("Guerrié créé avec succès");
+            Console.Write("Nouveau Guerrier : ");
+            nouveauGuerrier.AfficherInfos();
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
 
         }
+
+        // Methode pour la valida du nom siaisie (non vide, alphanumérique) du guerrier créé
+        static string LireNomValide()
+        {
+            // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
+            while (true)
+            {
+                Console.Write("Saisissez le nom du Guerrier : ");
+                string nom = Console.ReadLine();
+
+                // Condition qui permet de verifier que la saisie  est valide en fonction de la condition 
+
+                if (string.IsNullOrWhiteSpace(nom))
+                {
+                    Console.WriteLine("Erreur ! le nom sisie ne peut pas etre vide"); // Si la saisie est invalide => message erreur et redemande de saisir 
+                    continue;
+                }
+                return nom;
+
+            }
+        }
+
+        // Méthode pour la validation du nombre sisie pour les PV et le nbr d'attaque du guerrier créé
+        static int LireEntierValide(string message, int min, int max)
+        {
+            int nombre = 0; 
+
+            // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
+            while (true)
+            {
+                Console.Write($"{message} ({min}-{max}) : "); // Affiche le message avec la plage autorisé "Votre choix (1-8) : "
+                string input = Console.ReadLine();
+
+                // Condition qui permet de verifier que la saisie convertie  est valide en fonction de la plage fixée
+                if (int.TryParse(input, out nombre) && nombre >= min && nombre <= max)
+                {
+                    return nombre;
+                }
+
+                Console.WriteLine($"Veuillez entrer un nombre entre {min} et {max}."); // Si la saisie est invalide => message erreur et redemande de saisir 
+            }
+        }
+
+        // Methode pour suprimmer un Guerrier de la liste 
+        static void SupprimerGuerrier()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║        SUPPRIMER UN GUERRIER           ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Verificationsi la liste est vide ou pas : avec une condition  
+
+            if (listeGuerriers.Count == 0)
+            {
+                Console.WriteLine("Aucun guerrier à supprimer !");
+                Console.WriteLine("Appuyez sur une touche pour continuer...");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+
+            // Affichage de la liste des giuerriers avec des numéros pour chaque guerrier
+
+            Console.WriteLine("LISTE DES GUERRIERS :");
+            for (int i = 0; i < listeGuerriers.Count ; i++) // Boucle for qui parcourt la liste.
+            {
+                Console.Write($"{i + 1} : "); 
+                listeGuerriers[i].AfficherInfos();
+            }
+
+            // Ajout d'une option pour permettre à l'utlisateur d'annuler la supression
+            Console.WriteLine();
+            Console.WriteLine("Saisisseez 0 pour annuler la supression");
+            Console.WriteLine();
+
+            // Demande à l’utilisateur de choisir un guerrier à supprimer :
+            int choix = LireChoixUtilisateur("Guerrier à supprimer", 0, listeGuerriers.Count);
+
+            if (choix == 0) // Si le choix est 0 => annulation de la supression 
+            {
+                Console.WriteLine("Suppression annulée.");
+            }
+            else //  Sinon l’utilisateur a choisi un guerrier à supprimer : 
+            {
+                string nomSupprime = listeGuerriers[choix - 1].GetNom(); // On enlève 1 car la liste commence à 0 et on récupère le nom du guerrier avant suppression.
+                listeGuerriers.RemoveAt(choix - 1); // supprime le guerrier de la liste.
+                Console.WriteLine($"{nomSupprime} a été supprimé de la liste.");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
+        }     
 
         // Méthode pour afficher la liste des guerrier
-
         public static void AfficherListeGuerriers()
         {
-            foreach (Guerrier liste in NouveauGuerrier) // boucle pour parcourir la liste
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║         LISTE DES GUERRIERS            ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Condition pour verifier si la liste est vide, afficher un message d'information
+            if (listeGuerriers.Count == 0)
             {
-                liste.AfficherInfos();
+                Console.WriteLine("Aucun guerrier créé !!.");
+                Console.WriteLine("Utilisez l'option 1 pour créer votre premier guerrier !");
+            }
+            else // Sinon on affiche le nombre total de guerriers dans la liste 
+            {
+                Console.WriteLine($"Total : {listeGuerriers.Count} guerrier(s)");
+                Console.WriteLine();
+
+                for (int i = 0; i < listeGuerriers.Count; i++) // On Parcourt la liste des guerriers et affiche leurs informations
+                {
+                    Console.Write($"  {i + 1}. ");
+                    listeGuerriers[i].AfficherInfos();
+
+                    // On affi le type de guerrier en parcourant la liste avec des condition pour chaque type 
+                    if (listeGuerriers[i] is Sorcier)
+                    {
+                        Console.WriteLine("     Type: Sorcier");
+                    }
+                    else if (listeGuerriers[i] is Gobelin nain)
+                    {
+                        Console.WriteLine($"     Type: Gobelin {(nain.GetArmureLourde() ? "(avec armure lourde)" : "(sans armure lourde)")}"); // On affiche si le gobelin a une armure lourde ou non
+                    }
+                    else if (listeGuerriers[i] is Sorciere)
+                    {
+                        Console.WriteLine("     Type: Sorcière");
+                    }
+                    else
+                    {
+                        Console.WriteLine("     Type: Guerrier classique");
+                    }
+                    Console.WriteLine();
+                }
             }
 
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
         }
-
     }
+
+         
 }
