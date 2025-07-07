@@ -8,12 +8,12 @@ namespace Brief_Duel_Guerriers
 {
     interface ICombattant
     {
-        string getNom();
-        int getPointsDeVie();
-       int SetPointsDeVie(int pointsDeVie);
+        string GetNom();
+        int GetPointsDeVie();
+       void SetPointsDeVie(int pointsDeVie);
         int Attaquer();
-        int SubirDegats(int degats);
-        string AfficherInfos();
+        void SubirDegats(int degats);
+        void AfficherInfos();
         
     }
 }
