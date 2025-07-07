@@ -106,11 +106,11 @@ namespace Brief_Duel_Guerriers
                     LancerDuel();
                     break;
 
-                /*case 5:
+                case 5:
                     LancerTournoi();
                     break;
 
-                case 6:
+               /* case 6:
                     AfficherHistorique();
                     break;*/
 
@@ -473,5 +473,133 @@ namespace Brief_Duel_Guerriers
             Console.ReadKey();
             Console.Clear();
         }
+
+        // Methode pour lancer un tournoi par elimination 
+        public static void LancerTournoi()
+        {
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║             TOURNOI                    ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+
+            // Vérifier qu'il y a au moins 2 guerriers
+            if (listeGuerriers.Count < 2)
+            {
+                Console.WriteLine("Il faut au moins 2 guerriers pour lancer un Tournoi !");
+                Console.WriteLine("Appuyez sur une touche pour revenir au menu principal...");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+
+            Console.WriteLine("\n=== LANCEMENT DU TOURNOI ===");
+
+            // On Créé une copie de la liste pour ne pas modifier l'originale
+            List<Guerrier> participants = new List<Guerrier>();
+            foreach (var guerrier in listeGuerriers)
+            {
+                // Ajout du guerrier avec ses stats originales dans la nouvel liste 
+                participants.Add(guerrier);
+            }
+
+            Console.WriteLine($"Tournoi lancé avec {participants.Count} participants !");
+
+            // On affiche les participants
+            Console.WriteLine("\nParticipants :");
+            foreach (var participant in participants)
+            {
+                participant.AfficherInfos();
+            }
+
+            int tour = 1;
+
+            // Le tournoir continue tant qu'il reste plus d'un guerrier dans la liste 
+            while (participants.Count > 1)
+            {
+                Console.WriteLine($"\n==================== TOUR {tour} ====================");
+
+                // On crée une liste de survicant à partir de la liste de vainque de la manche precedante 
+                List<Guerrier> survivants = new List<Guerrier>();
+
+                // Organiser les combats (2 par 2)
+                for (int i = 0; i < participants.Count; i += 2)
+                {
+                    if (i + 1 < participants.Count)
+                    {
+                        // Combat entre deux guerriers
+                        Guerrier guerrier1 = participants[i];
+                        Guerrier guerrier2 = participants[i + 1];
+
+                        Console.WriteLine($"\n  COMBAT : {guerrier1.GetNom()} VS {guerrier2.GetNom()}");
+
+                        // Combat jusqu'à ce qu'un guerrier tombe
+                        while (guerrier1.GetPointsDeVie() > 0 && guerrier2.GetPointsDeVie() > 0)
+                        {
+                            // Guerrier 1 attaque
+                            int degats1 = guerrier1.Attaquer();
+                            guerrier2.SubirDegats(degats1);
+
+                            if (guerrier2.GetPointsDeVie() <= 0)
+                                break;
+
+                            // Guerrier 2 attaque
+                            int degats2 = guerrier2.Attaquer();
+                            guerrier1.SubirDegats(degats2);
+                        }
+
+                        // Condition pour déterminer le vainqueur en fonction des PV de chaque guerrier
+                        if (guerrier1.GetPointsDeVie() > 0)
+                        {
+                            Console.WriteLine($"  {guerrier1.GetNom()} remporte le combat !");
+                            survivants.Add(guerrier1);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"  {guerrier2.GetNom()} remporte le combat !");
+                            survivants.Add(guerrier2);
+                        }
+                    }
+                    else
+                    {
+                        // Si on une liste avec un nbr de Guerrier impair il passe automatiquement au tour suivant 
+                        Console.WriteLine($"  {participants[i].GetNom()} passe automatiquement au tour suivant !");
+                        survivants.Add(participants[i]);
+                    }
+                }
+
+                // Mettre à jour la liste des participants
+                participants = survivants;
+
+                // on aAffiche les survivants de la manche precedante
+                Console.WriteLine($"\nSurvivants du tour {tour} :");
+                foreach (var survivant in participants)
+                {
+                    survivant.AfficherInfos();
+                }
+
+                tour++;
+
+                // Pause entre les tours
+                if (participants.Count > 1)
+                {
+                    Console.WriteLine("\nAppuyez sur une touche pour continuer vers le prochain tour...");
+                    Console.ReadKey();
+                }
+            }
+
+            // Conditoin pour afficher le vainqueurd du si il reste que un seul gierrier dans la liste des participant 
+            if (participants.Count == 1)
+            {
+                Console.WriteLine($"\n         CHAMPION DU TOURNOI : {participants[0].GetNom()} !");
+                participants[0].AfficherInfos();
+            }
+
+            Console.WriteLine("\nAppuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
+
+        }
+
     }
 }
