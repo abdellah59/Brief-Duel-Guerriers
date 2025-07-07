@@ -73,8 +73,8 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("╔════════════════════════════════════════╗");
             Console.WriteLine("║           MENU PRINCIPAL               ║");
             Console.WriteLine("╠════════════════════════════════════════╣");
-            Console.WriteLine("║  1. Créer un guerrier                  ║");
-            Console.WriteLine("║  2. Supprimer un guerrier              ║");
+            Console.WriteLine("║  1. Créer un Combattant                ║");
+            Console.WriteLine("║  2. Supprimer un Combattant            ║");
             Console.WriteLine("║  3. Afficher la liste                  ║");
             Console.WriteLine("║  4. Lancer un duel                     ║");
             Console.WriteLine("║  5. Lancer un tournoi                  ║");
@@ -82,7 +82,7 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine("║  7. Afficher le guide utlisateur       ║");
             Console.WriteLine("║  8. Quitter                            ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
-            Console.WriteLine($"Guerriers créés : {listeGuerriers.Count}");
+            Console.WriteLine($"Guerriers créés : {listeCombattants.Count}");
             Console.WriteLine();
 
 
@@ -91,15 +91,15 @@ namespace Brief_Duel_Guerriers
             switch (choix)
             {
                 case 1:
-                    AjouterGuerrier();
+                    AjouterCombattant();
                     break;
 
                 case 2:
-                    SupprimerGuerrier();
+                    SupprimerCombattant();
                     break;
 
                 case 3:
-                    AfficherListeGuerriers();
+                    AfficherListeCombattants();
                     break;
 
                 case 4:
@@ -151,15 +151,14 @@ namespace Brief_Duel_Guerriers
             }
         }
 
-        // création d'une liste pour stocker les nouveaux guerrier 
-        private static List<Guerrier> listeGuerriers = new List<Guerrier>();
+        static List<ICombattant> listeCombattants = new List<ICombattant>();
 
         // méthode pour ajouter un ajouter un guerrier 
-        public static void AjouterGuerrier()
+        public static void AjouterCombattant()
         {
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════════╗");
-            Console.WriteLine("║         CRÉER UN GUERRIER              ║");
+            Console.WriteLine("║         CRÉER UN COMBATTANT            ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
@@ -173,23 +172,23 @@ namespace Brief_Duel_Guerriers
             // Choix du tupe de guerrier avec un switch 
 
             Console.WriteLine();
-            Console.WriteLine("TYPES DE GUERRIERS :");
+            Console.WriteLine("TYPES DE Combatant :");
             Console.WriteLine("1. Guerrier classique");
-            Console.WriteLine("2  Gobelin:");
+            Console.WriteLine("2  Gobelin");
             Console.WriteLine("3. Sorcière");
             Console.WriteLine("4. Sorcier");
             Console.WriteLine();
 
 
             // Appelle la fonction LireChoixUtilisateur pour demander à l'utilisateur de choisir un type de guerrier entre 1 et 4)
-            int typeChoix = LireChoixUtilisateur("Choissez un Type de Guerrier", 1, 4);
+            int typeChoix = LireChoixUtilisateur("Choissez un Type de Combattant", 1, 4);
 
-            Guerrier nouveauGuerrier = null; //  variable qui contient l'objet du guerrier qu'on va créer
+            ICombattant nouveauCombattant = null; //  variable qui contient l'objet du guerrier qu'on va créer
 
             switch (typeChoix)
             {
                 case 1:
-                    nouveauGuerrier = new Guerrier(nom, pointsDeVie, nbDesAttaques);
+                    nouveauCombattant = new Guerrier(nom, pointsDeVie, nbDesAttaques);
                     break;
 
                 // demande à l’utilisateur s’il souhaite équiper le Gobelin d'une armure lourde. Reponse covertie en true si la reponse commence par o
@@ -197,28 +196,28 @@ namespace Brief_Duel_Guerriers
                     Console.WriteLine();
                     Console.Write("Vous voulez équiper le gobelin avec une Armure Lourde ? (o/n): ");
                     bool armureLourde = Console.ReadLine().ToLower().StartsWith("o");
-                    nouveauGuerrier = new Gobelin(nom, pointsDeVie, nbDesAttaques, armureLourde);
+                    nouveauCombattant = new Gobelin(nom, pointsDeVie, nbDesAttaques, armureLourde);
                     break;
 
                 case 3:
-                    nouveauGuerrier = new Sorciere(nom, pointsDeVie, nbDesAttaques);
+                    nouveauCombattant = new Sorciere(nom, pointsDeVie, nbDesAttaques);
                     break;
 
                 case 4:
                     int mana = LireEntierValide("Mana", 10, 100); // demande de saisir une valeur de mana entre 10 et 100 avec la methode lireEntierValide
-                    nouveauGuerrier = new Sorcier(nom, pointsDeVie, nbDesAttaques, mana);
+                    nouveauCombattant = new Sorcier(nom, pointsDeVie, nbDesAttaques, mana);
                     break;
 
             }
 
             // Ajout du nouveau guerrier créer dans la liste globale
-            listeGuerriers.Add(nouveauGuerrier);
+            listeCombattants.Add(nouveauCombattant);
 
             // Affichage d'un message confirmation et des info du guerrier créer
             Console.WriteLine();
-            Console.WriteLine("Guerrié créé avec succès");
-            Console.Write("Nouveau Guerrier : ");
-            nouveauGuerrier.AfficherInfos();
+            Console.WriteLine("Combattant créé avec succès");
+            Console.Write("Nouveau Combattant : ");
+            nouveauCombattant.AfficherInfos();
             Console.WriteLine();
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
@@ -232,7 +231,7 @@ namespace Brief_Duel_Guerriers
             // Boucle qui itère jusqu'à ce qu'une saisie valide et rentrée 
             while (true)
             {
-                Console.Write("Saisissez le nom du Guerrier : ");
+                Console.Write("Saisissez le nom du Combattant : ");
                 string nom = Console.ReadLine();
 
                 // Condition qui permet de verifier que la saisie  est valide en fonction de la condition 
@@ -269,19 +268,19 @@ namespace Brief_Duel_Guerriers
         }
 
         // Methode pour suprimmer un Guerrier de la liste 
-        static void SupprimerGuerrier()
+        static void SupprimerCombattant()
         {
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════════╗");
-            Console.WriteLine("║        SUPPRIMER UN GUERRIER           ║");
+            Console.WriteLine("║        SUPPRIMER UN COMBATTANT         ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
             // Verificationsi la liste est vide ou pas : avec une condition  
 
-            if (listeGuerriers.Count == 0)
+            if (listeCombattants.Count == 0)
             {
-                Console.WriteLine("Aucun guerrier à supprimer !");
+                Console.WriteLine("Aucun combattant à supprimer !");
                 Console.WriteLine("Appuyez sur une touche pour continuer...");
                 Console.ReadKey();
                 Console.Clear();
@@ -290,11 +289,11 @@ namespace Brief_Duel_Guerriers
 
             // Affichage de la liste des giuerriers avec des numéros pour chaque guerrier
 
-            Console.WriteLine("LISTE DES GUERRIERS :");
-            for (int i = 0; i < listeGuerriers.Count; i++) // Boucle for qui parcourt la liste.
+            Console.WriteLine("LISTE DES COMBATTANTS :");
+            for (int i = 0; i < listeCombattants.Count; i++) // Boucle for qui parcourt la liste.
             {
                 Console.Write($"{i + 1} : ");
-                listeGuerriers[i].AfficherInfos();
+                listeCombattants[i].AfficherInfos();
             }
 
             // Ajout d'une option pour permettre à l'utlisateur d'annuler la supression
@@ -303,7 +302,7 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine();
 
             // Demande à l’utilisateur de choisir un guerrier à supprimer :
-            int choix = LireChoixUtilisateur("Guerrier à supprimer", 0, listeGuerriers.Count);
+            int choix = LireChoixUtilisateur("Combattant à supprimer", 0, listeCombattants.Count);
 
             if (choix == 0) // Si le choix est 0 => annulation de la supression 
             {
@@ -311,8 +310,8 @@ namespace Brief_Duel_Guerriers
             }
             else //  Sinon l’utilisateur a choisi un guerrier à supprimer : 
             {
-                string nomSupprime = listeGuerriers[choix - 1].GetNom(); // On enlève 1 car la liste commence à 0 et on récupère le nom du guerrier avant suppression.
-                listeGuerriers.RemoveAt(choix - 1); // supprime le guerrier de la liste.
+                string nomSupprime = listeCombattants[choix - 1].GetNom(); // On enlève 1 car la liste commence à 0 et on récupère le nom du guerrier avant suppression.
+                listeCombattants.RemoveAt(choix - 1); // supprime le guerrier de la liste.
                 Console.WriteLine($"{nomSupprime} a été supprimé de la liste.");
             }
 
@@ -323,51 +322,33 @@ namespace Brief_Duel_Guerriers
         }
 
         // Méthode pour afficher la liste des guerrier
-        public static void AfficherListeGuerriers()
+        public static void AfficherListeCombattants()
         {
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════════╗");
-            Console.WriteLine("║         LISTE DES GUERRIERS            ║");
+            Console.WriteLine("║         LISTE DES COMBATTANT           ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.WriteLine();
 
             // Condition pour verifier si la liste est vide, afficher un message d'information
-            if (listeGuerriers.Count == 0)
+            if (listeCombattants.Count == 0)
             {
-                Console.WriteLine("Aucun guerrier créé !!.");
-                Console.WriteLine("Utilisez l'option 1 pour créer votre premier guerrier !");
+                Console.WriteLine("Aucun combattant créé !!.");
+                Console.WriteLine("Utilisez l'option 1 pour créer votre premier combattant !");
             }
             else // Sinon on affiche le nombre total de guerriers dans la liste 
             {
-                Console.WriteLine($"Total : {listeGuerriers.Count} guerrier(s)");
+                Console.WriteLine($"Total : {listeCombattants.Count} combattant(s)");
                 Console.WriteLine();
 
-                for (int i = 0; i < listeGuerriers.Count; i++) // On Parcourt la liste des guerriers et affiche leurs informations
+                for (int i = 0; i < listeCombattants.Count; i++) // On Parcourt la liste des Combattants et affiche leurs informations
                 {
                     Console.Write($"  {i + 1}. ");
-                    listeGuerriers[i].AfficherInfos();
-
-                    // On affi le type de guerrier en parcourant la liste avec des condition pour chaque type 
-                    if (listeGuerriers[i] is Sorcier)
-                    {
-                        Console.WriteLine("     Type: Sorcier");
-                    }
-                    else if (listeGuerriers[i] is Gobelin nain)
-                    {
-                        Console.WriteLine($"     Type: Gobelin {(nain.GetArmureLourde() ? "(avec armure lourde)" : "(sans armure lourde)")}"); // On affiche si le gobelin a une armure lourde ou non
-                    }
-                    else if (listeGuerriers[i] is Sorciere)
-                    {
-                        Console.WriteLine("     Type: Sorcière");
-                    }
-                    else
-                    {
-                        Console.WriteLine("     Type: Guerrier classique");
-                    }
-                    Console.WriteLine();
+                    listeCombattants[i].AfficherInfos();
+                    Console.WriteLine($"  Type: {listeCombattants[i].GetTypeCombattant()}\n"); // On affiche le type de guerrier en parcourant la liste
                 }
             }
-
+            Console.WriteLine();
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
             Console.Clear();
@@ -386,73 +367,77 @@ namespace Brief_Duel_Guerriers
 
 
             // Condition pour vérifier qu'il y a au moins 2 guerriers dans la liste pour lancer un duel 
-            if (listeGuerriers.Count < 2)
+            if (listeCombattants.Count < 2)
             {
-                Console.WriteLine("Il faut au moins 2 guerriers pour lancer un duel !");
+                Console.WriteLine("Il faut au moins 2 combattants pour lancer un duel !");
                 Console.WriteLine("Appuyez sur une touche pour revenir au menu principal..");
                 Console.ReadKey();
                 Console.Clear();
                 return;
             }
             
-            Console.WriteLine("\n=== LANCEMENT D'UN DUEL ===");
+            Console.WriteLine("\n=== LANCEMENT DU DUEL ===");
 
             // On affiche la liste des guerriers disponibles 
-            Console.WriteLine("Guerriers disponibles :");
-            for (int i = 0; i < listeGuerriers.Count; i++) // On parcourt la boucle pour afficher la liste de guerriers
+            Console.WriteLine("\nCombattant disponibles :\n");
+            for (int i = 0; i < listeCombattants.Count; i++) // On parcourt la boucle pour afficher la liste de guerriers
             {
-                Console.WriteLine($"{i + 1}. {listeGuerriers[i].GetNom()} (PV: {listeGuerriers[i].GetPointsDeVie()})");
+                Console.WriteLine($"{i + 1}. {listeCombattants[i].GetNom()} (PV: {listeCombattants[i].GetPointsDeVie()}) (Type : {listeCombattants[i].GetTypeCombattant()})\n");
             }
 
             // Système de choix avec avec saisi du numero du premier guerrier qu'on choisi 
-            int choix1 = LireChoixUtilisateur("Chisissez votre Premier Guerrier : ", 1, (listeGuerriers.Count));
+            int choix1 = LireChoixUtilisateur("Chisissez votre Premier Combattant : ", 1, (listeCombattants.Count));
 
             // Choisir le deuxième guerrier
-            int choix2 = LireChoixUtilisateur("Chisissez votre Deuxieme Guerrier", 1, (listeGuerriers.Count));
+            int choix2 = LireChoixUtilisateur("Chisissez votre Deuxieme Combattant", 1, (listeCombattants.Count));
 
             if (choix1 == choix2)
             {
-                Console.WriteLine("Vous devez choisir deux guerriers différents !");
+                Console.WriteLine("Vous devez choisir deux Combattants différents !");
                 return;
             }
 
             // On eécupéree les deux guerriers avec un -1 car la liste commence à 0
-            Guerrier guerrier1 = listeGuerriers[choix1 - 1];
-            Guerrier guerrier2 = listeGuerriers[choix2 - 1];
+            ICombattant combattant1 = listeCombattants[choix1 - 1];
+            ICombattant combattant2 = listeCombattants[choix2 - 1];
 
-            Console.WriteLine($"\n  DUEL : {guerrier1.GetNom()} VS {guerrier2.GetNom()}");
+            // On Sauvegardee les PV originaux
+            int pvOriginal1 = combattant1.GetPointsDeVie();
+            int pvOriginal2 = combattant2.GetPointsDeVie();
+
+            Console.WriteLine($"\n  DUEL : {combattant1.GetNom()} VS {combattant2.GetNom()}");
 
             // On lance une boucle de combat jusqu'à ce qu'un guerrier soit vaincu 
             int tour = 1;
-            while (guerrier1.GetPointsDeVie() > 0 && guerrier2.GetPointsDeVie() > 0)
+            while (combattant1.GetPointsDeVie() > 0 && combattant2.GetPointsDeVie() > 0)
             {
-                Console.WriteLine($"\n--- Tour {tour} ---");
+                Console.WriteLine($"\n--- Tour {tour} ---\n");
 
                 // On affiche l'état des guerriers au début 
-                guerrier1.AfficherInfos();
-                guerrier2.AfficherInfos();
+                combattant1.AfficherInfos();
+                combattant2.AfficherInfos();
 
                 // On initialise les attaques :  Guerrier 1 attaque Guerrier 2
-                int degats1 = guerrier1.Attaquer();
-                Console.WriteLine($"{guerrier1.GetNom()} attaque et inflige {degats1} dégâts !");
-                guerrier2.SubirDegats(degats1);
+                int degats1 = combattant1.Attaquer();
+                Console.WriteLine($"{combattant1.GetNom()} attaque et inflige {degats1} dégâts !");
+                combattant2.SubirDegats(degats1);
 
                 // Vérifier si Guerrier 2 est vaincu 
-                if (guerrier2.GetPointsDeVie() <= 0)
+                if (combattant2.GetPointsDeVie() <= 0)
                 {
-                    Console.WriteLine($"{guerrier2.GetNom()} est vaincu !");
+                    Console.WriteLine($"{combattant2.GetNom()} est vaincu !");
                     break;
                 }
 
                 // Guerrier 2 attaque Guerrier 1
-                int degats2 = guerrier2.Attaquer();
-                Console.WriteLine($"{guerrier2.GetNom()} attaque et inflige {degats2} dégâts !");
-                guerrier1.SubirDegats(degats2);
+                int degats2 = combattant2.Attaquer();
+                Console.WriteLine($"{combattant2.GetNom()} attaque et inflige {degats2} dégâts !");
+                combattant1.SubirDegats(degats2);
 
                 // Vérifier si Guerrier 1 est vaincu 
-                if (guerrier1.GetPointsDeVie() <= 0)
+                if (combattant1.GetPointsDeVie() <= 0)
                 {
-                    Console.WriteLine($"{guerrier1.GetNom()} est vaincu !");
+                    Console.WriteLine($"{combattant1.GetNom()} est vaincu !");
                     break;
                 }
 
@@ -460,15 +445,20 @@ namespace Brief_Duel_Guerriers
             }
 
             // On déterminer qui est le vainqueur poaur l'afficher avec une condition qui verifier les PV de chaque guerrier
-            if (guerrier1.GetPointsDeVie() > 0)
+            if (combattant1.GetPointsDeVie() > 0)
             {
-                Console.WriteLine($"\n  {guerrier1.GetNom()} remporte le duel !");
+                Console.WriteLine($"\n Le {combattant1.GetTypeCombattant()} : {combattant1.GetNom()} remporte le duel !");
             }
             else
             {
-                Console.WriteLine($"\n  {guerrier2.GetNom()} remporte le duel !");
+                Console.WriteLine($"\n Le {combattant2.GetTypeCombattant()} : {combattant2.GetNom()} remporte le duel !");
             }
 
+            // Restaurer les PV
+            combattant1.SetPointsDeVie(pvOriginal1);
+            combattant2.SetPointsDeVie(pvOriginal2);
+
+            Console.WriteLine();
             Console.WriteLine("Appuyez sur une touche pour revenir au menu principal..");
             Console.ReadKey();
             Console.Clear();
@@ -484,9 +474,9 @@ namespace Brief_Duel_Guerriers
             Console.WriteLine();
 
             // Vérifier qu'il y a au moins 2 guerriers
-            if (listeGuerriers.Count < 2)
+            if (listeCombattants.Count < 2)
             {
-                Console.WriteLine("Il faut au moins 2 guerriers pour lancer un Tournoi !");
+                Console.WriteLine("Il faut au moins 2 Combattants pour lancer un Tournoi !");
                 Console.WriteLine("Appuyez sur une touche pour revenir au menu principal...");
                 Console.ReadKey();
                 Console.Clear();
@@ -495,12 +485,15 @@ namespace Brief_Duel_Guerriers
 
             Console.WriteLine("\n=== LANCEMENT DU TOURNOI ===");
 
-            // On Créé une copie de la liste pour ne pas modifier l'originale
-            List<Guerrier> participants = new List<Guerrier>();
-            foreach (var guerrier in listeGuerriers)
+            // On Créé une copie de la liste pour ne pas modifier l'originale et on sauvegarde leur PV 
+            List<ICombattant> participants = new List<ICombattant>();
+            Dictionary<ICombattant, int> pvOriginaux = new Dictionary<ICombattant, int>();
+
+            foreach (var combattant in listeCombattants)
             {
                 // Ajout du guerrier avec ses stats originales dans la nouvel liste 
-                participants.Add(guerrier);
+                participants.Add(combattant);
+                pvOriginaux[combattant] = combattant.GetPointsDeVie();
             }
 
             Console.WriteLine($"Tournoi lancé avec {participants.Count} participants !");
@@ -520,7 +513,7 @@ namespace Brief_Duel_Guerriers
                 Console.WriteLine($"\n==================== TOUR {tour} ====================");
 
                 // On crée une liste de survicant à partir de la liste de vainque de la manche precedante 
-                List<Guerrier> survivants = new List<Guerrier>();
+                List<ICombattant> survivants = new List<ICombattant>();
 
                 // Organiser les combats (2 par 2)
                 for (int i = 0; i < participants.Count; i += 2)
@@ -528,36 +521,36 @@ namespace Brief_Duel_Guerriers
                     if (i + 1 < participants.Count)
                     {
                         // Combat entre deux guerriers
-                        Guerrier guerrier1 = participants[i];
-                        Guerrier guerrier2 = participants[i + 1];
+                        ICombattant Combattant1 = participants[i];
+                        ICombattant Combattant2 = participants[i + 1];
 
-                        Console.WriteLine($"\n  COMBAT : {guerrier1.GetNom()} VS {guerrier2.GetNom()}");
+                        Console.WriteLine($"\n  COMBAT : {Combattant1.GetNom()} VS {Combattant2.GetNom()}");
 
-                        // Combat jusqu'à ce qu'un guerrier tombe
-                        while (guerrier1.GetPointsDeVie() > 0 && guerrier2.GetPointsDeVie() > 0)
+                        // Combat jusqu'à ce qu'un guerrier perde
+                        while (Combattant1.GetPointsDeVie() > 0 && Combattant2.GetPointsDeVie() > 0)
                         {
                             // Guerrier 1 attaque
-                            int degats1 = guerrier1.Attaquer();
-                            guerrier2.SubirDegats(degats1);
+                            int degats1 = Combattant1.Attaquer();
+                            Combattant2.SubirDegats(degats1);
 
-                            if (guerrier2.GetPointsDeVie() <= 0)
+                            if (Combattant2.GetPointsDeVie() <= 0)
                                 break;
 
                             // Guerrier 2 attaque
-                            int degats2 = guerrier2.Attaquer();
-                            guerrier1.SubirDegats(degats2);
+                            int degats2 = Combattant2.Attaquer();
+                            Combattant1.SubirDegats(degats2);
                         }
 
                         // Condition pour déterminer le vainqueur en fonction des PV de chaque guerrier
-                        if (guerrier1.GetPointsDeVie() > 0)
+                        if (Combattant1.GetPointsDeVie() > 0)
                         {
-                            Console.WriteLine($"  {guerrier1.GetNom()} remporte le combat !");
-                            survivants.Add(guerrier1);
+                            Console.WriteLine($"  {Combattant1.GetNom()} remporte le combat !");
+                            survivants.Add(Combattant1);
                         }
                         else
                         {
-                            Console.WriteLine($"  {guerrier2.GetNom()} remporte le combat !");
-                            survivants.Add(guerrier2);
+                            Console.WriteLine($"  {Combattant2.GetNom()} remporte le combat !");
+                            survivants.Add(Combattant2);
                         }
                     }
                     else
@@ -568,7 +561,7 @@ namespace Brief_Duel_Guerriers
                     }
                 }
 
-                // Mettre à jour la liste des participants
+                // Mise à jour de la liste des participants
                 participants = survivants;
 
                 // on aAffiche les survivants de la manche precedante
@@ -588,11 +581,20 @@ namespace Brief_Duel_Guerriers
                 }
             }
 
-            // Conditoin pour afficher le vainqueurd du si il reste que un seul gierrier dans la liste des participant 
+            // Conditoin pour afficher le vainqueur du tournoi si il reste que un seul gierrier dans la liste des participant 
             if (participants.Count == 1)
             {
                 Console.WriteLine($"\n         CHAMPION DU TOURNOI : {participants[0].GetNom()} !");
                 participants[0].AfficherInfos();
+            }
+
+            // On reinitialise les PV des combattants pour le prochain tournoi
+            foreach (var combattant in listeCombattants)
+            {
+                if (pvOriginaux.ContainsKey(combattant))
+                {
+                    combattant.SetPointsDeVie(pvOriginaux[combattant]);
+                }
             }
 
             Console.WriteLine("\nAppuyez sur une touche pour continuer...");

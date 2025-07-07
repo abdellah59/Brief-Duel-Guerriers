@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Brief_Duel_Guerriers.classe
 {
-    internal class Gobelin : Guerrier 
+    internal class Gobelin : Guerrier  // hérite de Guerrier
     {
         // Attribut specifique :
         // Pour vérifier si le gobelin porte une armure 
@@ -45,5 +45,11 @@ namespace Brief_Duel_Guerriers.classe
 
         }
 
+        // Definition du type pour la sauvegarde
+        public override string GetTypeCombattant()
+        {
+
+            return $"Gobelin {(GetArmureLourde() ? "(avec armure lourde)" : "(sans armure lourde)")}"; //On retourne si le gobelin a une armure lourde ou non
+        }
     }
 }

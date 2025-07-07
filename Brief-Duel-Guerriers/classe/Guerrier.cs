@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brief_Duel_Guerriers.classe
 {
-    internal class Guerrier : ICombattant
+    internal class Guerrier : ICombattant // Classe Guerrier qui implémente l'interface ICombattant
     {
         // attributs partie 1
 
@@ -30,7 +30,7 @@ namespace Brief_Duel_Guerriers.classe
             return PointsDeVie;
         }
         public void SetPointsDeVie(int pointsDeVie) {
-           
+            PointsDeVie = pointsDeVie;
         }
         public int GetNbDesAttaque() {
             return NbDesAttaques;
@@ -72,5 +72,15 @@ namespace Brief_Duel_Guerriers.classe
             Console.WriteLine($"{Nom} à subit {degats} dégats et il reste maintenant {PointsDeVie} PV ");
 
         }
+
+        //Methode qui permet de retourner le type de comabatant pour la suavegarde
+        public virtual string GetTypeCombattant()
+        {
+            return "Guerrier";
+        }
+
+        // Méthodes pour les types spécialisés (retournent des valeurs par défaut)
+        public virtual bool GetArmureLourde() => false;
+        public virtual int GetMana() => 0;
     }
 };
